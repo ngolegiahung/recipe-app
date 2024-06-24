@@ -1,9 +1,9 @@
 package com.springframework.recipe_app.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class UnitOfMeasure {
@@ -12,6 +12,9 @@ public class UnitOfMeasure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uom")
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     public Long getId() {
         return id;
