@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"notes", "ingredients"})
 @Entity
 public class Recipe {
 
@@ -48,5 +49,4 @@ public class Recipe {
         this.ingredients.add(ingredient);
         return this;
     }
-
 }
