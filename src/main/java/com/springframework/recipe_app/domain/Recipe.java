@@ -6,7 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"notes", "ingredients"})
 @Entity
 public class Recipe {

@@ -1,5 +1,6 @@
 package com.springframework.recipe_app.service;
 
+import com.springframework.recipe_app.commands.RecipeCommand;
 import com.springframework.recipe_app.converters.RecipeCommandToRecipe;
 import com.springframework.recipe_app.converters.RecipeToRecipeCommand;
 import com.springframework.recipe_app.domain.Recipe;
@@ -68,4 +69,25 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, never()).findById(anyLong());
     }
 
+    @Test
+    public void getRecipeCommandByIdTest() {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+
+
+        RecipeCommand recipeCommandById = recipeService.findCommandById(1L);
+
+        assertNotNull(recipeCommandById);
+        assertEquals(recipeCommandById, recipeCommand);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+    }
 }
