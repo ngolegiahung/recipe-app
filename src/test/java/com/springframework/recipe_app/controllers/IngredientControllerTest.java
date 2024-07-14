@@ -1,6 +1,8 @@
 package com.springframework.recipe_app.controllers;
 
+import com.springframework.recipe_app.commands.IngredientCommand;
 import com.springframework.recipe_app.commands.RecipeCommand;
+import com.springframework.recipe_app.service.IngredientService;
 import com.springframework.recipe_app.service.RecipeService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,9 @@ class IngredientControllerTest {
 
     @Mock
     RecipeService recipeService;
+
+    @Mock
+    IngredientService ingredientService;
 
     @InjectMocks
     IngredientController ingredientController;
@@ -49,5 +54,21 @@ class IngredientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("ingredient/index"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+
+    @Test
+    public void testShowIngredient() throws Exception {
+        //given
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        //when
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+
+        //then
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
     }
 }
