@@ -2,11 +2,14 @@ package com.springframework.recipe_app.converters;
 
 import com.springframework.recipe_app.commands.RecipeCommand;
 import com.springframework.recipe_app.domain.Category;
+import com.springframework.recipe_app.domain.Ingredient;
 import com.springframework.recipe_app.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+
+import java.util.Comparator;
 
 @Component
 public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
@@ -48,7 +51,8 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         }
 
         if (source.getIngredients() != null && source.getIngredients().size() > 0){
-            source.getIngredients()
+            source.getIngredients().stream()
+                    .sorted(Comparator.comparing(Ingredient::getId))
                     .forEach(ingredient -> command.getIngredients().add(ingredientConverter.convert(ingredient)));
         }
 
